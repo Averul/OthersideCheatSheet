@@ -1,11 +1,3 @@
-/******************************************************************
- * The Other Side – Ghost Finder
- * - Modal with collapsible details
- * - Edit Mode to assign 3 evidences
- * - Import MERGES by name (preserves attributes)
- ******************************************************************/
-
-/* ---------- Evidence definitions ---------- */
 const EVIDENCE = [
   { id: "writing",   label: "Writing",   css: "ev-writing"   },
   { id: "freezing",  label: "Freezing",  css: "ev-freezing"  },
@@ -15,7 +7,6 @@ const EVIDENCE = [
   { id: "audio",     label: "Audio",     css: "ev-audio"     }
 ];
 
-/* ---------- Ghost dataset (behaviors from your sheet) ---------- */
 let ghosts = [
   {
     name: "Revenant",
@@ -39,7 +30,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "Banshee",
     evidence: ["audio","radiation","emf20"],
@@ -61,7 +51,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "Demon",
     evidence: ["writing","uv","radiation"],
@@ -86,7 +75,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "Skia",
     evidence: ["audio","emf20","uv"],
@@ -112,7 +100,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "Wraith",
     evidence: ["audio","freezing","uv"],
@@ -133,7 +120,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "Bhoot",
     evidence: ["freezing","radiation","writing"],
@@ -152,7 +138,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "Tariaksuq",
     evidence: ["audio","emf20","freezing"],
@@ -178,7 +163,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "Tantalus",
     evidence: ["freezing","uv","emf20"],
@@ -202,7 +186,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "Iblis",
     evidence: ["audio","freezing","writing"],
@@ -226,7 +209,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "Shura",
     evidence: ["emf20","writing","freezing"],
@@ -251,7 +233,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "Phantom",
     evidence: ["radiation","audio","uv"],
@@ -272,7 +253,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "Poltergeist",
     evidence: ["uv","emf20","writing"],
@@ -292,7 +272,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "Strigoi",
     evidence: ["uv","freezing","writing"],
@@ -317,7 +296,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "Wisp",
     evidence: ["audio","radiation","freezing"],
@@ -341,7 +319,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "The Echo",
     evidence: ["radiation","freezing","uv"],
@@ -362,7 +339,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "The Forgotten",
     evidence: ["emf20","radiation","uv"],
@@ -381,7 +357,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "Doppelganger",
     evidence: ["audio","writing","uv"],
@@ -396,7 +371,6 @@ let ghosts = [
       }
     }
   },
-
   {
     name: "Wewe Gombel",
     evidence: ["radiation","emf20","freezing"],
@@ -423,15 +397,11 @@ let ghosts = [
   }
 ];
 
-
-/* ---------- UI State ---------- */
 let editMode = false;
 
-/* ---------- Filters ---------- */
 function buildFilters() {
   const wrap = document.getElementById("dynamicFilters");
   wrap.innerHTML = "";
-
   const evBox = document.createElement("div");
   evBox.className = "evidence";
   evBox.innerHTML = `<button onclick="resetEvidence()" class="toggle-dark-mode small">Clear Evidence</button><h2>Select Evidence</h2>`;
@@ -445,27 +415,22 @@ function buildFilters() {
   wrap.appendChild(evBox);
 }
 
-/* ---------- Rendering ---------- */
 function renderGhosts() {
   const list = document.getElementById("ghostList");
   list.innerHTML = "";
-
   ghosts.forEach((ghost, idx) => {
     const item = document.createElement("div");
     item.className = "ghost-item";
     item.id = `ghost-${idx}`;
-
     const chips = ghost.evidence.map(id => {
       const meta = EVIDENCE.find(e => e.id === id);
       return meta ? `<span class="chip ${meta.css}">${meta.label}</span>` : "";
     }).join("");
-
     item.innerHTML = `
       <div class="card">
         <div class="card-front">
           <h3>${ghost.name}</h3>
           <div class="chips">${chips || `<span class="chip none">No evidence set</span>`}</div>
-
           <div class="hint ${editMode ? "" : "hidden"}">Edit: Click chips below</div>
           <div class="edit-evidence ${editMode ? "" : "hidden"}">
             ${EVIDENCE.map(ev => {
@@ -473,7 +438,6 @@ function renderGhosts() {
               return `<button class="chip ${ev.css} ${active}" onclick="toggleGhostEvidence(${idx}, '${ev.id}')">${ev.label}</button>`;
             }).join("")}
           </div>
-
           <button onclick="openModal(${idx})">View Details</button>
         </div>
       </div>
@@ -482,23 +446,19 @@ function renderGhosts() {
   });
 }
 
-/* ---------- Modal & Collapsible Details ---------- */
 function openModal(index) {
   const ghost = ghosts[index];
   const modal = document.getElementById("detailsModal");
   const body  = document.getElementById("modalBody");
-
   const chips = ghost.evidence.map(id => {
     const m = EVIDENCE.find(e => e.id === id);
     return m ? `<span class="chip ${m.css}">${m.label}</span>` : "";
   }).join("");
-
   body.innerHTML = `
     <h2 id="modalTitle">${ghost.name}</h2>
     <div class="chips" style="margin-bottom:10px">${chips || `<span class="chip none">No evidence set</span>`}</div>
     ${accordionBehaviors(ghost)}
   `;
-
   modal.classList.remove("hidden");
   document.body.style.overflow = "hidden";
 }
@@ -512,13 +472,10 @@ function accordionBehaviors(ghost) {
   const b = ghost.behaviors || {};
   const i = b.interaction || { abilities: [], inabilities: [] };
   const h = b.hunting || { abilities: [], threshold: null, frequency: null, movementSpeed: null };
-
   const mkList = (arr) => (arr && arr.length)
     ? `<ul class="acc-list">${arr.map(x => `<li>${x}</li>`).join("")}</ul>`
     : `<div class="acc-empty">No notes</div>`;
-
   const mkPill = (label, val) => val ? `<span class="beh-pill"><span>${label}:</span> ${val}</span>` : "";
-
   const interaction = `
     <details class="acc" open>
       <summary class="acc-summary">
@@ -537,7 +494,6 @@ function accordionBehaviors(ghost) {
       </div>
     </details>
   `;
-
   const hunting = `
     <details class="acc">
       <summary class="acc-summary">
@@ -560,41 +516,37 @@ function accordionBehaviors(ghost) {
       </div>
     </details>
   `;
-
   return interaction + hunting;
 }
 
-/* Canonical trait keys we use in TRAITS_BY_GHOST */
 const CANON_TRAITS = new Set([
   "slow","highLosSpeed",
   "turnOnLights","turnOffLights",
   "turnOnRadios","turnOffRadios",
   "neverClosesDoors","neverSlamsDoors",
   "lightsCandles","blowsOutCandles",
-  "noFlxPod","yesFlxPod", // <-- added
+  "noFlxPod","yesFlxPod",
   "holyWaterVeryEffective","holyWaterEffective","holyWaterLessEffective","holyWaterNormal",
   "closesDoors"
 ]);
 
-/* Accept older/alternate checkbox ids and map them to canonical keys */
 const TRAIT_SYNONYMS = {
   canCloseDoors: "closesDoors",
   cantUseFlxPod: "noFlxPod",
   cannotUseFlxPod: "noFlxPod",
   cantInteractWithFlxPod: "noFlxPod",
   cannotInteractWithFlxPod: "noFlxPod",
-  canInteractWithFlxPod: "yesFlxPod", // <-- added
-  canUseFlxPod: "yesFlxPod",          // <-- added
+  canInteractWithFlxPod: "yesFlxPod",
+  canUseFlxPod: "yesFlxPod",
   canLightCandles: "lightsCandles",
   canExtinguishCandles: "blowsOutCandles",
   blowsCandles: "blowsOutCandles",
   lightsOn: "turnOnLights",
   lightsOff: "turnOffLights",
   radiosOn: "turnOnRadios",
-  radiosOff: "turnOffRadios",
+  radiosOff: "turnOffRadios"
 };
 
-/* Map any trait id from the DOM to the canonical id we use in data */
 function normalizeTraitId(id) {
   if (!id) return null;
   if (CANON_TRAITS.has(id)) return id;
@@ -602,45 +554,32 @@ function normalizeTraitId(id) {
   return CANON_TRAITS.has(mapped) ? mapped : null;
 }
 
-
-/* ===== FROM YOUR LATEST LISTS (authoritative) ===== */
 const TRAIT_SECTIONS = {
-  /* Speed / LOS */
   slow: ["Demon"],
   highLosSpeed: [
     "Skia","Wraith","Tantalus","Iblis","Shura",
     "Poltergeist","Strigoi","Wisp","The Forgotten","Wewe Gombel"
   ],
-
-  /* Lights */
-  // Turns OFF lights
   turnOffLights: [
     "Revenant","Banshee","Demon","Skia","Wraith","Bhoot","Tariaksuq",
     "Tantalus","Iblis","Shura","Phantom","Poltergeist","Strigoi",
     "The Forgotten","Doppelganger","Wewe Gombel"
   ],
-  // Turns ON lights
   turnOnLights: [
     "Revenant","Banshee","Demon","Skia","Wraith","Bhoot","Tantalus",
     "Iblis","Shura","Phantom","Poltergeist","Strigoi","Wisp",
     "The Forgotten","Doppelganger","Wewe Gombel"
   ],
-
-  /* Radios */
-  // Turns OFF radios
   turnOffRadios: [
     "Revenant","Banshee","Demon","Skia","Wraith","Bhoot","Tariaksuq",
     "Tantalus","Iblis","Shura","Phantom","Poltergeist","Wisp",
     "The Forgotten","Doppelganger","Wewe Gombel"
   ],
-  // Turns ON radios
   turnOnRadios: [
     "Revenant","Banshee","Demon","Skia","Wraith","Bhoot","Tariaksuq",
     "Tantalus","Iblis","Shura","Poltergeist","Strigoi","Wisp",
     "The Forgotten","Doppelganger","Wewe Gombel"
   ],
-
-  /* Doors */
   closesDoors: [
     "Revenant","Banshee","Demon","Skia","Wraith","Bhoot","Tariaksuq",
     "Iblis","Shura","Phantom","Poltergeist","Strigoi","Wisp",
@@ -648,17 +587,12 @@ const TRAIT_SECTIONS = {
   ],
   neverClosesDoors: ["Tantalus"],
   neverSlamsDoors:  ["Tantalus"],
-
-  /* FLX-POD */
   noFlxPod:  ["Skia","Tantalus","Phantom","The Echo","The Forgotten"],
-
   yesFlxPod: [
     "Revenant","Banshee","Demon","Wraith","Bhoot","Tariaksuq",
     "Iblis","Shura","Poltergeist","Strigoi","Wisp","Doppelganger",
     "Wewe Gombel"
   ],
-
-  /* Holy Water effectiveness */
   holyWaterVeryEffective: ["Demon","Wisp","Wewe Gombel"],
   holyWaterEffective:     ["Wraith"],
   holyWaterLessEffective: ["Tantalus","Shura"],
@@ -666,8 +600,6 @@ const TRAIT_SECTIONS = {
     "Revenant","Banshee","Skia","Bhoot","Tariaksuq","Iblis","Phantom",
     "Poltergeist","Strigoi","The Echo","The Forgotten","Doppelganger"
   ],
-
-  /* Candles */
   lightsCandles: [
     "Revenant","Demon","Skia","Iblis","Poltergeist","Strigoi","Wisp","Doppelganger"
   ],
@@ -677,8 +609,6 @@ const TRAIT_SECTIONS = {
   ]
 };
 
-/* rebuild map + attach (keep this part as you had) */
-/* rebuild map + attach (keep your current builder) */
 const TRAITS_BY_GHOST = {};
 for (const [trait, names] of Object.entries(TRAIT_SECTIONS)) {
   names.forEach(name => {
@@ -686,18 +616,14 @@ for (const [trait, names] of Object.entries(TRAIT_SECTIONS)) {
   });
 }
 
-/* attach traits and resolve conflicts */
 ghosts.forEach(g => {
   const t = (TRAITS_BY_GHOST[g.name] || []).slice();
-  // If both are present, prefer "noFlxPod" (per your rules) and drop "yesFlxPod"
   if (t.includes("noFlxPod") && t.includes("yesFlxPod")) {
     t.splice(t.indexOf("yesFlxPod"), 1);
   }
   g.traits = t;
 });
 
-
-/* ---------- Edit mode ---------- */
 function toggleEditMode() {
   editMode = !editMode;
   document.getElementById("editToggleBtn").textContent = editMode ? "Disable Edit Mode" : "Enable Edit Mode";
@@ -711,12 +637,11 @@ function toggleGhostEvidence(ghostIndex, evId) {
   const i = g.evidence.indexOf(evId);
   if (i >= 0) g.evidence.splice(i, 1);
   else if (g.evidence.length < 3) g.evidence.push(evId);
-  else { g.evidence.shift(); g.evidence.push(evId); } // cap at 3; replace oldest
+  else { g.evidence.shift(); g.evidence.push(evId); }
   renderGhosts();
   filterGhosts();
 }
 
-/* ---------- Import / Export ---------- */
 function exportData() {
   const data = { ghosts };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
@@ -730,7 +655,6 @@ function exportData() {
   URL.revokeObjectURL(url);
 }
 
-/* Helpers for safe merging */
 function toKey(name) { return String(name || "").trim().toLowerCase(); }
 
 function ensureDefaults(g) {
@@ -746,13 +670,11 @@ function deepMerge(target, source) {
   if (source.behaviors) {
     target.behaviors = target.behaviors || {};
     const tb = target.behaviors, sb = source.behaviors;
-
     tb.interaction = tb.interaction || { abilities: [], inabilities: [] };
     if (sb.interaction) {
       if (Array.isArray(sb.interaction.abilities))  tb.interaction.abilities  = sb.interaction.abilities.slice();
       if (Array.isArray(sb.interaction.inabilities)) tb.interaction.inabilities = sb.interaction.inabilities.slice();
     }
-
     tb.hunting = tb.hunting || { abilities: [], threshold: null, frequency: null, movementSpeed: null };
     if (sb.hunting) {
       if (Array.isArray(sb.hunting.abilities)) tb.hunting.abilities = sb.hunting.abilities.slice();
@@ -766,11 +688,9 @@ function deepMerge(target, source) {
   return target;
 }
 
-/* MERGING import: preserves attributes */
 function importData() {
   const inp = document.getElementById("importFile");
   if (!inp.files || !inp.files[0]) return alert("Choose a JSON file first.");
-
   const reader = new FileReader();
   reader.onload = e => {
     try {
@@ -778,20 +698,16 @@ function importData() {
       const incoming = Array.isArray(parsed) ? parsed
                      : Array.isArray(parsed.ghosts) ? parsed.ghosts
                      : null;
-
       if (!incoming) {
         alert("Invalid file: expected an array of ghosts or { ghosts: [...] }");
         return;
       }
-
       const byName = new Map(ghosts.map(g => [toKey(g.name), g]));
       let updated = 0, added = 0;
-
       incoming.forEach(raw => {
         if (!raw || !raw.name) return;
         const key = toKey(raw.name);
         const existing = byName.get(key);
-
         if (existing) {
           if (Array.isArray(raw.evidence)) existing.evidence = raw.evidence.slice();
           deepMerge(existing, raw);
@@ -810,7 +726,6 @@ function importData() {
           added++;
         }
       });
-
       renderGhosts();
       filterGhosts();
       alert(`Import complete: ${updated} updated, ${added} added. (Attributes preserved.)`);
@@ -822,40 +737,27 @@ function importData() {
   reader.readAsText(inp.files[0]);
 }
 
-/* ---------- Filtering ---------- */
 function getSelectedFilters() {
   const evidence = Array.from(document.querySelectorAll('input[data-type="evidence"]:checked')).map(cb => cb.value);
   return { evidence };
 }
 
 function filterGhosts() {
-  // evidence + search
   const selectedEvidence = Array.from(document.querySelectorAll('input[data-type="evidence"]:checked')).map(cb => cb.value);
   const q = document.getElementById("searchBar").value.trim().toLowerCase();
-
-  // traits (normalize ids)
   const selectedTraitsRaw = Array.from(document.querySelectorAll('.traits input:checked')).map(cb => cb.id);
-  const selectedTraits = selectedTraitsRaw
-    .map(normalizeTraitId)
-    .filter(Boolean); // drop unknowns so they don't kill matches
-
+  const selectedTraits = selectedTraitsRaw.map(normalizeTraitId).filter(Boolean);
   ghosts.forEach((ghost, i) => {
     const el = document.getElementById(`ghost-${i}`);
-
     const matchesEvidence = selectedEvidence.every(ev => (ghost.evidence || []).includes(ev));
     const matchesSearch   = ghost.name.toLowerCase().includes(q);
-
-    // Require every chosen trait to be present in ghost.traits
     const gTraits = ghost.traits || [];
     const matchesTraits = selectedTraits.every(tr => gTraits.includes(tr));
-
     const show = matchesEvidence && matchesSearch && matchesTraits;
     el.classList.toggle("match", show);
     el.classList.toggle("hidden", !show);
   });
 }
-
-
 
 function searchGhosts() { filterGhosts(); }
 function resetEvidence() {
@@ -863,17 +765,12 @@ function resetEvidence() {
   filterGhosts();
 }
 function resetFilters() {
-  // Evidence
   document.querySelectorAll('#dynamicFilters input[type="checkbox"]').forEach(cb => { cb.checked = false; cb.disabled = false; });
-  // Traits
   document.querySelectorAll('.traits input[type="checkbox"]').forEach(cb => { cb.checked = false; cb.disabled = false; });
-
   document.getElementById("searchBar").value = "";
   ghosts.forEach((_, i) => document.getElementById(`ghost-${i}`).classList.remove("hidden","match"));
 }
 
-
-/* ---------- Theme / Sidebar ---------- */
 function toggleDarkMode() {
   document.body.classList.toggle("light-mode");
   const button = document.querySelector(".toggle-dark-mode");
@@ -888,9 +785,7 @@ function toggleSidebar() {
   else { button.textContent = "<"; button.style.left = "270px"; }
 }
 
-/* ---------- Init ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   buildFilters();
   renderGhosts();
 });
-

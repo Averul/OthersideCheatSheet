@@ -8,7 +8,6 @@
 </head>
 <body>
   <div class="container">
-    <!-- Sidebar -->
     <div class="sidebar">
       <input
         type="text"
@@ -20,66 +19,53 @@
 
       <button class="toggle-dark-mode" onclick="toggleDarkMode()">Toggle Light Mode</button>
 
-      <!-- Evidence filters are built here by script.js (buildFilters) -->
       <div id="dynamicFilters"></div>
 
-            <!-- Extra identification traits -->
-        <div class="traits" aria-label="Ghost traits filters">
+      <div class="traits" aria-label="Ghost traits filters">
         <h2>Ghost Traits</h2>
 
-        <!-- Speed / LOS -->
         <label><input type="checkbox" id="slow" onclick="filterGhosts()"> Slow Ghost</label>
         <label><input type="checkbox" id="highLosSpeed" onclick="filterGhosts()"> High LOS Speed</label>
 
         <hr>
 
-        <!-- Lights -->
         <label><input type="checkbox" id="turnOnLights"  onclick="filterGhosts()"> Turns ON Lights</label>
         <label><input type="checkbox" id="turnOffLights" onclick="filterGhosts()"> Turns OFF Lights</label>
 
-        <!-- Radios -->
         <label><input type="checkbox" id="turnOnRadios"  onclick="filterGhosts()"> Turns ON Radios</label>
         <label><input type="checkbox" id="turnOffRadios" onclick="filterGhosts()"> Turns OFF Radios</label>
 
         <hr>
 
-        <!-- Doors -->
         <label><input type="checkbox" id="neverClosesDoors" onclick="filterGhosts()"> Never Closes Doors</label>
         <label><input type="checkbox" id="neverSlamsDoors"  onclick="filterGhosts()"> Never Slams Doors (except hunt)</label>
 
         <hr>
 
-        <!-- Candles -->
         <label><input type="checkbox" id="lightsCandles"   onclick="filterGhosts()"> Can Light Candles</label>
         <label><input type="checkbox" id="blowsOutCandles" onclick="filterGhosts()"> Can Extinguish Candles</label>
 
         <hr>
 
-        <!-- Equipment -->
-<!-- Equipment -->
         <label><input type="checkbox" id="yesFlxPod" onclick="filterGhosts()"> Can interact with FLX-POD</label>
         <label><input type="checkbox" id="noFlxPod"  onclick="filterGhosts()"> Can't interact with FLX-POD</label>
 
         <hr>
 
-        <!-- Holy Water effectiveness -->
         <label><input type="checkbox" id="holyWaterVeryEffective" onclick="filterGhosts()"> Holy Water: Very Effective</label>
         <label><input type="checkbox" id="holyWaterEffective"      onclick="filterGhosts()"> Holy Water: Effective</label>
         <label><input type="checkbox" id="holyWaterLessEffective"  onclick="filterGhosts()"> Holy Water: Less Effective</label>
         <label><input type="checkbox" id="holyWaterNormal"         onclick="filterGhosts()"> Holy Water: Normal</label>
-        </div>
-
+      </div>
 
       <button id="resetFiltersBtn" class="toggle-dark-mode" onclick="resetFilters()">Reset Filters</button>
     </div>
 
-    <!-- Main content -->
     <div class="content">
       <button class="toggle-sidebar" onclick="toggleSidebar()"><</button>
 
       <h1>The Other Side – Ghost Finder</h1>
 
-      <!-- Evidence legend (purely visual) -->
       <div class="legend" aria-hidden="true">
         <span class="chip ev-writing">Writing</span>
         <span class="chip ev-freezing">Freezing</span>
@@ -89,12 +75,10 @@
         <span class="chip ev-audio">Audio</span>
       </div>
 
-      <!-- Cards rendered here -->
       <div class="ghost-list" id="ghostList"></div>
     </div>
   </div>
 
-  <!-- Details modal -->
   <div id="detailsModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal()" aria-label="Close">×</button>

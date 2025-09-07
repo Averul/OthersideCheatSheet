@@ -571,7 +571,7 @@ const CANON_TRAITS = new Set([
   "turnOnRadios","turnOffRadios",
   "neverClosesDoors","neverSlamsDoors",
   "lightsCandles","blowsOutCandles",
-  "noFlxPod",
+  "noFlxPod","yesFlxPod", // <-- added
   "holyWaterVeryEffective","holyWaterEffective","holyWaterLessEffective","holyWaterNormal",
   "closesDoors"
 ]);
@@ -579,11 +579,12 @@ const CANON_TRAITS = new Set([
 /* Accept older/alternate checkbox ids and map them to canonical keys */
 const TRAIT_SYNONYMS = {
   canCloseDoors: "closesDoors",
-  canSlamDoors: "slamsDoors",                // (not used; you chose "neverSlamsDoors")
   cantUseFlxPod: "noFlxPod",
   cannotUseFlxPod: "noFlxPod",
   cantInteractWithFlxPod: "noFlxPod",
   cannotInteractWithFlxPod: "noFlxPod",
+  canInteractWithFlxPod: "yesFlxPod", // <-- added
+  canUseFlxPod: "yesFlxPod",          // <-- added
   canLightCandles: "lightsCandles",
   canExtinguishCandles: "blowsOutCandles",
   blowsCandles: "blowsOutCandles",
@@ -649,7 +650,13 @@ const TRAIT_SECTIONS = {
   neverSlamsDoors:  ["Tantalus"],
 
   /* FLX-POD */
-  noFlxPod: ["Skia","Tantalus","Phantom","The Echo","The Forgotten"],
+  noFlxPod:  ["Skia","Tantalus","Phantom","The Echo","The Forgotten"],
+
+  yesFlxPod: [
+    "Revenant","Banshee","Demon","Wraith","Bhoot","Tariaksuq",
+    "Iblis","Shura","Poltergeist","Strigoi","Wisp","Doppelganger",
+    "Wewe Gombel"
+  ],
 
   /* Holy Water effectiveness */
   holyWaterVeryEffective: ["Demon","Wisp","Wewe Gombel"],
@@ -671,14 +678,23 @@ const TRAIT_SECTIONS = {
 };
 
 /* rebuild map + attach (keep this part as you had) */
+/* rebuild map + attach (keep your current builder) */
 const TRAITS_BY_GHOST = {};
 for (const [trait, names] of Object.entries(TRAIT_SECTIONS)) {
   names.forEach(name => {
     (TRAITS_BY_GHOST[name] ||= []).includes(trait) || TRAITS_BY_GHOST[name].push(trait);
   });
 }
-ghosts.forEach(g => { g.traits = (TRAITS_BY_GHOST[g.name] || []).slice(); });
 
+/* attach traits and resolve conflicts */
+ghosts.forEach(g => {
+  const t = (TRAITS_BY_GHOST[g.name] || []).slice();
+  // If both are present, prefer "noFlxPod" (per your rules) and drop "yesFlxPod"
+  if (t.includes("noFlxPod") && t.includes("yesFlxPod")) {
+    t.splice(t.indexOf("yesFlxPod"), 1);
+  }
+  g.traits = t;
+});
 
 
 /* ---------- Edit mode ---------- */
